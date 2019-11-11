@@ -39,7 +39,6 @@ class Conv2DReflect(layers.Layer):
             pad_right = pad_along_width - pad_left
             self.paddings = tf.constant([[0, 0], [pad_top, pad_bottom],
                                          [pad_left, pad_right], [0, 0]])
-            print(self.paddings)
         super(Conv2DReflect, self).build(input_shape)
 
     def call(self, inputs):
@@ -62,14 +61,6 @@ class Downsampler(layers.Layer):
     def __init__(self, filters, kernel_size, scale_factor=2):
         super(Downsampler, self).__init__()
 
-        # self.conv1 = layers.Conv2D(filters=filters,
-        #    kernel_size=kernel_size,
-        #    strides=2,
-        #    padding="SAME")
-        # self.conv2 = layers.Conv2D(filters=filters,
-        #    kernel_size=kernel_size,
-        #    strides=1,
-        #    padding="SAME")
         self.conv1 = Conv2DReflect(filters=filters,
                                    kernel_size=kernel_size,
                                    strides=scale_factor,
@@ -101,14 +92,6 @@ class Upsampler(layers.Layer):
         self.scale_factor = scale_factor
         self.upsampling_mode = upsampling_mode
 
-        # self.conv1 = layers.Conv2D(filters=filters,
-        #    kernel_size=kernel_size,
-        #    strides=1,
-        #    padding="SAME")
-        # self.conv2 = layers.Conv2D(filters=filters,
-        #    kernel_size=1,
-        #    strides=1,
-        #    padding="SAME")
         self.conv1 = Conv2DReflect(filters=filters,
                                    kernel_size=kernel_size,
                                    strides=1,

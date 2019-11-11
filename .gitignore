@@ -126,3 +126,5 @@ dmypy.json
 
 output/
 .vscode/
+
+test.ipynb
