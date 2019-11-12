@@ -1,9 +1,12 @@
-import tensorflow as tf
+import tensorflow.keras.backend as K
 
 
-def pixelwise_mse(y_true, y_pred):
-    batch_size = y_true.shape[0]
-    y_true = tf.reshape(y_true, (batch_size, -1))
-    y_pred = tf.reshape(y_pred, (batch_size, -1))
+def pixelwise_mse(mask=None):
+    def loss_fn(y_true, y_pred):
+        sqr_err = K.square(y_true - y_pred)
+        if mask is not None:
+            sqr_err *= mask
+        sum_sqr = K.sum(sqr_err, axis=[1, 2, 3])
 
-    return tf.keras.losses.mean_squared_error(y_true, y_pred)
+        return K.mean(sum_sqr, axis=0)
+    return loss_fn
